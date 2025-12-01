@@ -8,17 +8,18 @@ import {
   Animated,
   Easing,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 
 const LANGUAGES = [
-  { key: "en", label: "English", colors: ["#667EEA", "#764BA2"] },
-  { key: "hi", label: "Hindi", colors: ["#F6D365", "#FDA085"] },
-  { key: "mr", label: "Marathi", colors: ["#84FAB0", "#8FD3F4"] },
-  { key: "gu", label: "Gujarati", colors: ["#FBD786", "#f7797d"] },
-  { key: "bn", label: "Bengali", colors: ["#FF9A9E", "#FAD0C4"] },
+  { key: "en", label: "English", color: "#667EEA" },
+  { key: "hi", label: "Hindi", color: "#F6D365" },
+  { key: "mr", label: "Marathi", color: "#84FAB0" },
+  { key: "gu", label: "Gujarati", color: "#FBD786" },
+  { key: "bn", label: "Bengali", color: "#FF9A9E" },
 ];
 
-export default function LanguageButtonsScreen({ onSelectLanguage = () => {} }) {
+export default function LanguageButtonsScreen({
+  onSelectLanguage = (key, label) => {},
+}) {
   const renderItem = ({ item }) => (
     <LanguageButton item={item} onPress={onSelectLanguage} />
   );
@@ -43,7 +44,6 @@ export default function LanguageButtonsScreen({ onSelectLanguage = () => {} }) {
 }
 
 function LanguageButton({ item, onPress }) {
-  // Animated press feedback
   const scale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
@@ -74,19 +74,14 @@ function LanguageButton({ item, onPress }) {
         onPress={handlePress}
         style={({ pressed }) => [styles.card, pressed && { opacity: 0.92 }]}
       >
-        <LinearGradient
-          colors={item.colors}
-          style={styles.gradient}
-          start={[0, 0]}
-          end={[1, 1]}
-        >
+        <View style={[styles.gradient, { backgroundColor: item.color }]}>
           <View style={styles.inner}>
             <Text style={styles.langLabel}>{item.label}</Text>
             <View style={styles.pill}>
               <Text style={styles.pillText}>Select</Text>
             </View>
           </View>
-        </LinearGradient>
+        </View>
       </Pressable>
     </Animated.View>
   );
